@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Inventory Management</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.sticky-top-note {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #53aebd;
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.sticky-top-note a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.sticky-top-note a:hover {
+  color: #dff6fb;
+}
+
+h1 {
+  margin-top: 60px;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.form-container {
+  margin: 40px auto;
+  padding: 30px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+  background-color: #53aebd;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.table-container {
+  margin: 40px auto;
+  padding: 30px;
+  width: 80%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #53aebd;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.edit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.tooltip-error {
+  margin-top: -10px;
+  margin-bottom: 15px;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  display: none;
+  align-items: center;
+  justify-content: start;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tooltip-icon {
+  margin-right: 8px;
+  font-weight: bold;
+  color: #ffc107;
+}
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Sticky Note Bar -->
+
+  <div class="sticky-top-note">
+    <a href="/product">Product</a>
+    <a href="/location">Location</a>
+    <a href="/product_movement">Movement</a>
+    <a href="/report">Report</a>
+  </div>
+
+  <h1>Inventory Management</h1>
+  <h2>Product</h2>
+
+  <div class="form-container">
+    <form id="product_form" method="POST" action="/add_product">
+      <input type="hidden" name="product_id" id="product_id">
+      <input type="text" id="product_name" name="product_name" pattern="^[A-Za-z0-9 ]+$" placeholder="Enter the product name" title="Name can only contain letters, numbers, and spaces." required>
+      <input type="submit" value="Add" id="submit_btn">
+    </form>    
+  </div>
+
+  <div class="table-container">
+    <h2>Product List</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Product Id</th>
+          <th>Product Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product[0] }}</td>
+          <td>{{ product[1] }}</td>
+          <td>
+            <button type="button" class='edit-btn' onclick="editProduct('{{ product[0] }}', '{{ product[1] }}')">Edit</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function editProduct(id, name) {
+      document.getElementById('product_name').value = name;
+      document.getElementById('product_id').value = id;
+      document.getElementById('submit_btn').value = 'Update';
+      document.getElementById('product_form').action = '/update_product';
+    }
+    document.querySelector("form").addEventListener("submit", function(event) {
+    const nameInput = document.getElementById("name");
+    const validPattern = /^[A-Za-z0-9 ]+$/;
+    if (!validPattern.test(nameInput.value)) {
+      nameInput.setCustomValidity("Name can only contain letters, numbers, and spaces.");
+      nameInput.reportValidity();
+      event.preventDefault();
+    } else {
+      nameInput.setCustomValidity("");
+    }
+});
+  </script>
+
+</body>
+</html>
+
