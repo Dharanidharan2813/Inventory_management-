@@ -1,11 +1,20 @@
 # Inventory_management-
 
 <h3>User Name :</h3> 
-user1 
-admin
+<p>
+  user1 
+</p>
+<p>
+  admin 
+</p>
+
 <h3>Password : :</h3> 
-pass1 
-admin123
+<p>
+  pass1 
+</p> 
+<p>
+  admin123
+</p>
 
 <h4>Reference photos</h4>
 
